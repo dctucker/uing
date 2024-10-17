@@ -324,6 +324,21 @@ proc save*(c: ptr DrawContext) =
 proc restore*(c: ptr DrawContext) =
   drawRestore(c)
 
+# ------- Draw Bitmap --------
+export Rect
+
+proc newBitmap*(c: ptr DrawContext, width, height: int): ptr DrawBitmap =
+    return newDrawBitmap(c, cint width, cint height)
+
+proc bitmapDraw*(c: ptr DrawContext, bmp: ptr DrawBitmap, srcrect: var Rect, dstrect: var Rect, filter: int) =
+  drawBitmapDraw(c, bmp, addr srcrect, addr dstrect, cint filter)
+
+proc update*(bmp: ptr DrawBitmap, data: pointer) =
+    drawBitmapUpdate(bmp, data)
+
+proc free*(bmp: ptr DrawBitmap) =
+    drawFreeBitmap(bmp)
+
 # -------- Attributes --------
 
 type
@@ -889,6 +904,7 @@ export
   DrawTextAlign, 
   DrawTextLayoutParams, 
   DrawContext, 
+  DrawBitmap, 
   DrawBrush, 
   DrawBrushType
 

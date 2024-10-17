@@ -1011,6 +1011,17 @@ proc drawSave*(c: ptr DrawContext) {.cdecl, importc: "uiDrawSave", libui.}
 proc drawRestore*(c: ptr DrawContext) {.cdecl, importc: "uiDrawRestore",
                                     libui.}
 
+type DrawBitmap* {.bycopy.} = object
+    width*, height*, stride*: cint
+    bmp*: pointer
+type Rect* {.bycopy.} = object
+    x*, y*, width*, height*: cint
+
+proc newDrawBitmap*(c: ptr DrawContext, width: cint, height: cint): ptr DrawBitmap {.cdecl, importc:"uiDrawNewBitmap", libui.}
+proc drawBitmapUpdate*(bmp: ptr DrawBitmap, data: pointer) {.cdecl, importc:"uiDrawBitmapUpdate", libui.}
+proc drawBitmapDraw*(c: ptr DrawContext, bmp: ptr DrawBitmap, srcrect: ptr Rect, dstrect: ptr Rect, filter: cint) {.cdecl, importc:"uiDrawBitmapDraw", libui.}
+proc drawFreeBitmap*(bmp: ptr DrawBitmap) {.cdecl, importc:"uiDrawFreeBitmap", libui.}
+
 type
   Attribute* = object
   AttributedString* = object
